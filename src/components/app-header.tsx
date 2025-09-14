@@ -1,5 +1,24 @@
+
+"use client";
+
 import { Scale, Search } from "lucide-react";
 import { Input } from "./ui/input";
+import { useEffect, useState } from "react";
+
+function ClientOnly({ children }: { children: React.ReactNode }) {
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    return null;
+  }
+
+  return <>{children}</>;
+}
+
 
 export function AppHeader() {
   return (
@@ -13,10 +32,12 @@ export function AppHeader() {
             TazaKhabar
           </h1>
         </div>
-        <div className="relative w-full max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Search..." className="pl-9" />
-        </div>
+        <ClientOnly>
+          <div className="relative w-full max-w-xs">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input placeholder="Search..." className="pl-9" />
+          </div>
+        </ClientOnly>
       </div>
     </header>
   );
