@@ -87,9 +87,9 @@ export function AnalyzerUI() {
       <Card>
         <CardContent className="p-6">
           <Tabs defaultValue="url" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="url">Analyze URL</TabsTrigger>
-              <TabsTrigger value="text">Analyze Text</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-muted p-1 h-auto">
+              <TabsTrigger value="url" className="py-2 data-[state=active]:bg-background">Analyze URL</TabsTrigger>
+              <TabsTrigger value="text" className="py-2 data-[state=active]:bg-background">Analyze Text</TabsTrigger>
             </TabsList>
             <TabsContent value="url" className="mt-6">
               <UrlForm action={handleFormAction} />
@@ -118,4 +118,3 @@ export function AnalyzerUI() {
     </div>
   );
 }
-
