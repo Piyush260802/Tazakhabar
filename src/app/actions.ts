@@ -2,6 +2,7 @@
 "use server";
 
 import { analyzeArticleFromUrl, AnalyzeArticleFromUrlOutput } from "@/ai/flows/analyze-article-from-url";
+import { analyzeArticleFromText } from "@/ai/flows/analyze-article-from-text";
 
 type FormState = {
   data: AnalyzeArticleFromUrlOutput | null;
@@ -21,7 +22,13 @@ export async function analyzeUrlOrText(
   }
 
   try {
-    const result = await analyzeArticleFromUrl({ url: value });
+    let result;
+    if (type === 'url') {
+      result = await analyzeArticleFromUrl({ url: value });
+    } else {
+      result = await analyzeArticleFromText({ text: value });
+    }
+    
     if (!result.assessment || !result.explanation) {
       throw new Error("The AI returned an incomplete analysis. Please try again.");
     }
