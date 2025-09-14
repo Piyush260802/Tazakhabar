@@ -1,7 +1,8 @@
 
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
+import React from "react";
 import { useActionState } from "react";
 import { analyzeUrlOrText } from "@/app/actions";
 import { useToast } from "@/hooks/use-toast";
@@ -21,6 +22,21 @@ const initialState = {
   timestamp: 0,
 };
 
+function ClientOnly({ children }: { children: React.ReactNode }) {
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    return null;
+  }
+
+  return <>{children}</>;
+}
+
+
 function UrlForm({ action }: { action: (payload: FormData) => void }) {
   return (
     <form action={action} className="space-y-4">
@@ -35,7 +51,7 @@ function UrlForm({ action }: { action: (payload: FormData) => void }) {
           type="url"
         />
       </div>
-      <SubmitButton />
+      <ClientOnly><SubmitButton /></ClientOnly>
     </form>
   );
 }
@@ -55,7 +71,7 @@ function TextForm({ action }: { action: (payload: FormData) => void }) {
           minLength={100}
         />
       </div>
-      <SubmitButton />
+      <ClientOnly><SubmitButton /></ClientOnly>
     </form>
   );
 }
@@ -88,8 +104,8 @@ export function AnalyzerUI() {
         <CardContent className="p-6">
           <Tabs defaultValue="url" className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-muted p-1 h-auto">
-              <TabsTrigger value="url" className="py-2 data-[state=active]:bg-background">Analyze URL</TabsTrigger>
-              <TabsTrigger value="text" className="py-2 data-[state=active]:bg-background">Analyze Text</TabsTrigger>
+              <TabsTrigger value="url" className="py-2 data-[state=active]:bg-background data-[state=active]:shadow-sm">Analyze URL</TabsTrigger>
+              <TabsTrigger value="text" className="py-2 data-[state=active]:bg-background data-[state=active]:shadow-sm">Analyze Text</TabsTrigger>
             </TabsList>
             <TabsContent value="url" className="mt-6">
               <UrlForm action={handleFormAction} />
