@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { analyzeUrlOrText } from "@/app/actions";
 import { useToast } from "@/hooks/use-toast";
 
@@ -62,7 +62,7 @@ function TextForm({ action }: { action: (payload: FormData) => void }) {
 
 
 export function AnalyzerUI() {
-  const [state, formAction] = useFormState(analyzeUrlOrText, initialState);
+  const [state, formAction] = useActionState(analyzeUrlOrText, initialState);
   const { toast } = useToast();
   const [isPending, startTransition] = React.useTransition();
 
@@ -118,3 +118,4 @@ export function AnalyzerUI() {
     </div>
   );
 }
+
