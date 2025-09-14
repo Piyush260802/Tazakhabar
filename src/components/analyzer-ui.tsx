@@ -18,7 +18,7 @@ import { Skeleton } from "./ui/skeleton";
 const initialState = {
   data: null,
   error: null,
-  timestamp: Date.now(),
+  timestamp: 0,
 };
 
 function UrlForm({ action }: { action: (payload: FormData) => void }) {
