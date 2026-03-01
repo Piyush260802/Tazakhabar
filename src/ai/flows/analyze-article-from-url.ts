@@ -12,7 +12,7 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const AnalyzeArticleFromUrlInputSchema = z.object({
-  url: z.string().describe('The URL of the article to analyze.'),
+  url: z.string().url().describe('The URL of the article to analyze.'),
 });
 export type AnalyzeArticleFromUrlInput = z.infer<
   typeof AnalyzeArticleFromUrlInputSchema
@@ -44,18 +44,14 @@ const getArticleContent = ai.defineTool(
     outputSchema: z.string(),
   },
   async (input) => {
-    try {
-      const response = await fetch(input.url);
-      if (!response.ok) {
-        throw new Error(
-          `Failed to fetch article content from URL: ${input.url}`
-        );
-      }
-      return await response.text();
-    } catch (error: any) {
-      console.error('Error fetching article content:', error);
-      return `Error fetching article content: ${error.message}`;
+    const response = await fetch(input.url);
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch article content from URL: ${input.url}`
+      );
     }
+
+    return await response.text();
   }
 );
 

@@ -14,10 +14,16 @@ export async function analyzeUrlOrText(
   prevState: FormState,
   formData: FormData
 ): Promise<FormState> {
-  const type = formData.get("type") as "url" | "text";
-  const value = formData.get("value") as string;
+  const type = formData.get("type");
+  const rawValue = formData.get("value");
 
-  if (!value || value.trim().length === 0) {
+  if (type !== "url" && type !== "text") {
+    return { data: null, error: "Invalid analysis type.", timestamp: Date.now() };
+  }
+
+  const value = typeof rawValue === "string" ? rawValue.trim() : "";
+
+  if (!value) {
     return { data: null, error: `Please provide a ${type} to analyze.`, timestamp: Date.now() };
   }
 
